@@ -14,14 +14,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp
+        services/fileservice.cpp \
+        services/floatservice.cpp \
+        services/imageservice.cpp \
+        services/itemsservice.cpp \
+        services/stringservice.cpp \
+        widgets/filewidget.cpp \
+        mainwindow.cpp \
+        main.cpp 
 
 HEADERS += \
-        mainwindow.h
+        services/fileservice.h \
+        services/floatservice.h \
+        services/imageservice.h \
+        services/itemsservice.h \
+        services/stringservice.h \
+        widgets/filewidget.h \
+        mainwindow.h \
+        services.h 
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        widgets/filewidget.ui
 
 win32: RC_FILE = iconsource.rc
 
