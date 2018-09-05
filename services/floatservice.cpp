@@ -47,6 +47,29 @@ double FloatService::avr(QVector<double> v)
     return sum / cnt;
 }
 
+int FloatService::min(QVector<int> v)
+{
+    int minimum = v.first();
+    for(auto i : v)
+    {
+        if (i < minimum)
+            minimum = i;
+    }
+    return  minimum;
+}
+
+int FloatService::max(QVector<int> v)
+{
+    int maximum = 0;
+    for(auto i : v)
+    {
+        if (i > maximum)
+            maximum = i;
+    }
+    return  maximum;
+
+}
+
 QString FloatService::replaceCommaToPoint(QString *strWithComma)
 {
     return strWithComma->replace(",", ".");

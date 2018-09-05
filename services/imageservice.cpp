@@ -80,6 +80,70 @@ bool ImageService::colorRange(QColor test, QColor etalon, int percentage)
     return cROk && cGOk && cBOk;
 }
 
+QVector<QPoint> ImageService::selectWhiteArea(QImage *img, QImage *tr, QColor areaColor, QPoint startPoint)
+{
+    QVector<QPoint> areaPoints;
+
+    //вправо вверх
+    for (int i = startPoint.x(); i < img->width(); i++)
+    {
+        for (int j = startPoint.y(); j >=0; j--)
+        {
+            if( colorRange(img->pixelColor(i,j), areaColor, 5))
+            {
+                QPoint p = QPoint(i, j);
+                areaPoints.append(p);
+            }
+        }
+    }
+
+    for(int i = startPoint.x(); i >= 0; i--)
+    {
+        for(int j = startPoint.y(); j < img->height(); j++)
+        {
+            if( colorRange(img->pixelColor(i,j), areaColor, 5))
+            {
+                QPoint p = QPoint(i, j);
+                areaPoints.append(p);
+            }
+        }
+    }
+    return areaPoints;
+}
+
+int ImageService::areaW(QVector<QPoint> areaPoints)
+{
+    QVector<int> xV;
+    for(auto p : areaPoints)
+        xV << p.x();
+
+    int lx = FloatService::min(xV);
+    int rx = FloatService::max(xV);
+
+    int w = rx - lx;
+    if(w >= 0)
+        return w;
+    else
+        return -w;
+}
+
+int ImageService::areaH(QVector<QPoint> areaPoints)
+{
+    QVector<int> yV;
+    for(auto p : areaPoints)
+        yV << p.y();
+
+    int tY = FloatService::min(yV);
+    int bY = FloatService::max(yV);
+
+    int h = bY - tY;
+    if(h >= 0)
+        return h;
+    else
+        return -h;
+
+}
+
 bool ImageService::borderArea(QImage img, int i, int j, int w)
 {
     bool top = false;

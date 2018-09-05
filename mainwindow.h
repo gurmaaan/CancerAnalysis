@@ -6,6 +6,7 @@
 #include <QGraphicsPixmapItem>
 #include <QDebug>
 #include <QColor>
+#include <QVector2D>
 
 #include "services.h"
 #include "widgets/imagewidget.h"
@@ -29,12 +30,19 @@ public:
     QImage *img() const;
     QImage *thresholdImg() const;
 
+    QVector<QPoint> getWhiteArea() const;
+
+    void setWhiteArea(QVector<QPoint> value);
+
+    QPoint getColorPoint() const;
+
 public slots:
     void setImg(QImage *img);
     void setThresholdImg(QImage *thresholdImg);
     void setThresholdVal(int thresholdVal);
     void setColorPoint(const QPoint colorPoint);
     void setSelectionClr(const QColor &selectionClr);
+
 
 private slots:
     void on_thresholdGB_clicked(bool checked);
@@ -51,6 +59,8 @@ private:
     QColor selectionClr_;
     int thresholdVal_;
     QPoint colorPoint_;
+
+    QVector<QPoint> whiteArea;
 };
 
 #endif // MAINWINDOW_H

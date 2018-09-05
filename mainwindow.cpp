@@ -31,13 +31,44 @@ void MainWindow::connectAll()
 
     connect(ui->imageView, &ImageWidget::selectionClrChanged,
             this, &MainWindow::setSelectionClr);
+
+    connect(ui->imageView, &ImageWidget::colorCoordChanged,
+            this, &MainWindow::setColorPoint);
+}
+
+QPoint MainWindow::getColorPoint() const
+{
+    return colorPoint_;
+}
+
+void MainWindow::setWhiteArea(QVector<QPoint> value)
+{
+    whiteArea = value;
+}
+
+QVector<QPoint> MainWindow::getWhiteArea() const
+{
+    return whiteArea;
 }
 
 void MainWindow::setColorPoint(const QPoint colorPoint)
 {
     colorPoint_ = colorPoint;
-    QColor c = QColor(img_->pixelColor(colorPoint));
-    setSelectionClr(c);
+    QColor areaClr = QColor(img_->pixelColor(colorPoint));
+    setSelectionClr(areaClr);
+    setWhiteArea(ImageService::selectWhiteArea(img(), thresholdImg(), areaClr, colorPoint));
+
+    int aW = ImageService::areaW(whiteArea);
+    int aH = ImageService::areaH(whiteArea);
+
+    int S = aW * aH;
+    int P = (aW+aH) * 2;
+    int kF = P*P / S;
+    ui->areaWhiteLineEdit->setText(QString::number(S / 1000));
+    ui->perimetrWhiteLineEdit->setText(QString::number(P / 10));
+    ui->formFactorWhiteLineEditr->setText(QString::number(kF));
+    qDebug() << whiteArea.count();
+
 }
 
 QImage *MainWindow::thresholdImg() const
@@ -75,10 +106,7 @@ void MainWindow::setSelectionClr(const QColor &selectionClr)
     int trV = qGray(selectionClr_.rgb());
     qDebug() << trV;
     if(trV >= 0 && trV <= 255 && ui->imageView->name() != "")
-    {
        setThresholdVal(trV);
-    }
-   // setThresholdVal(trV);
     ui->thresholdGB->setChecked(true);
 
     QPixmap pm = QPixmap( ui->selectionClrBtn->iconSize());
@@ -112,9 +140,14 @@ void MainWindow::on_thresholdGB_clicked(bool checked)
 void MainWindow::on_selectionClrBtn_clicked(bool checked)
 {
     if(!checked)
-        this->setCursor(Qt::CrossCursor);
+    {
+//        setWhiteArea(ImageService::selectWhiteArea(img(), thresholdImg(), selectionClr(), getColorPoint()));
+//        qDebug() << whiteArea;
+    }
     else
-        this->setCursor(Qt::ArrowCursor);
+    {
+
+    }
 }
 
 void MainWindow::on_thresholdHSlider_valueChanged(int value)

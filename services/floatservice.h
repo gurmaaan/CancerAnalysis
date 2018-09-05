@@ -15,6 +15,9 @@ public:
     static double min(QVector<double> v);
     static double avr(QVector<double> v);
 
+    static int max(QVector<int> v);
+    static int min(QVector<int> v);
+
     static QString replaceCommaToPoint(QString *strWithComma);
     static double fromString(QString str);
 };
