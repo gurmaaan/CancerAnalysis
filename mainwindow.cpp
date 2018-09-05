@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(ui->openImgFIleWidget, &ImageFileWidget::imgChanged,
+            ui->imageView, &ImageWidget::loadImg);
 }
 
 MainWindow::~MainWindow()
