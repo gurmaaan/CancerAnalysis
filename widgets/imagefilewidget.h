@@ -18,7 +18,7 @@ public:
     explicit ImageFileWidget(QWidget *parent = nullptr);
     ~ImageFileWidget();
 
-    inline QString name() const { return name_; }
+    inline QString name() { return name_; }
     inline QString path() const { return path_; }
     inline int h() const { return h_; }
     inline int w() const { return w_; }

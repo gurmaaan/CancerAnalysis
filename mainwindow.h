@@ -4,12 +4,12 @@
 #include <QMainWindow>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
-#include <QResizeEvent>
 #include <QDebug>
+#include <QColor>
 
+#include "services.h"
 #include "widgets/imagewidget.h"
 #include "widgets/imagefilewidget.h"
-#include "services.h"
 
 
 namespace Ui {
@@ -24,14 +24,30 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    QColor selectionClr() const;
+    void setSelectionClr(const QColor &selectionClr);
+
+    int thresholdVal() const;
+
+
+public slots:
+    void setImg(QImage *img);
+    void setThresholdImg(QImage *thresholdImg);
+    void setThresholdVal(int thresholdVal);
+
 private slots:
     void on_pushButton_clicked();
+    void on_horizontalSlider_valueChanged(int value);
+    void on_commandLinkButton_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;
-    QImage img_;
+    QImage *img_;
     QGraphicsScene scene_;
-    void resizeEvent(QResizeEvent *e);
+    void connectAll();
+    QImage *thresholdImg_;
+    QColor selectionClr_;
+    int thresholdVal_;
 };
 
 #endif // MAINWINDOW_H

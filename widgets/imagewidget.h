@@ -40,8 +40,8 @@ public slots:
     void setView(QGraphicsView *view);
     void setImg(QImage img);
     void loadImg(QImage *img);
-    void resizePlaceHolderImage(int w, int h);
-    void resizePlaceHolderImage(QSize size);
+    void resizePhImg(int w, int h);
+    void resizePhImg(QSize size);
 
 private slots:
     void on_actionZoom_In_triggered();
@@ -66,6 +66,7 @@ private:
 
     QImage placeHolder(int width = 300, int height = 300);
     void resizeEvent(QResizeEvent *e);
+    void scaleTo(double newScaleKoeff);
 };
 
 #endif // IMAGEWIDGET_H

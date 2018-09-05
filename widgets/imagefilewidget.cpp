@@ -37,7 +37,7 @@ void ImageFileWidget::setPath(const QString &path)
         path_ = path;
         emit pathChanged(path_);
         ui->pathLineEdit->setText(path);
-        setName(FileService::fileName(path));
+        setName(FileService::fileName(path_));
 
         QString ext = FileService::fileExtension(path);
         if(ext != "")

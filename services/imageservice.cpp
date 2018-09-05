@@ -24,6 +24,22 @@ QPixmap ImageService::addRect(QPixmap &pm, int w, QColor clr)
     return pm;
 }
 
+QImage *ImageService::threshold(QImage *img, int val)
+{
+    QImage *trImg = new QImage(img->size(), QImage::Format_Grayscale8);
+    for (int i = 0; i < img->width(); i++) {
+        for (int j = 0; j < img->height(); j++)
+        {
+            int grVal = qGray(img->pixelColor(i, j).rgb());
+            if(grVal <= val)
+                trImg->setPixelColor(i, j, QColor(Qt::black));
+            else
+                trImg->setPixelColor(i, j, QColor(Qt::white));
+        }
+    }
+    return trImg;
+}
+
 bool ImageService::borderArea(QImage img, int i, int j, int w)
 {
     bool top = false;

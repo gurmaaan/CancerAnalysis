@@ -6,8 +6,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->openImgFIleWidget, &ImageFileWidget::imgChanged,
-            ui->imageView, &ImageWidget::loadImg);
+    connectAll();
+    setSelectionClr(QColor(Qt::white));
+    img_ = new QImage();
+    thresholdImg_ = new QImage();
 }
 
 MainWindow::~MainWindow()
@@ -22,7 +24,51 @@ void MainWindow::on_pushButton_clicked()
     qDebug() << temp;
 }
 
-void MainWindow::resizeEvent(QResizeEvent *e)
+void MainWindow::connectAll()
 {
-//    ui->imageView->resizePlaceHolderImage(ui->imageView->size().width(), ui->imageView->size().height());
+    connect(ui->openImgFIleWidget, &ImageFileWidget::imgChanged,
+            ui->imageView, &ImageWidget::loadImg);
+    connect(ui->openImgFIleWidget, &ImageFileWidget::imgChanged,
+            this, &MainWindow::setImg);
+
+    connect(ui->openImgFIleWidget, &ImageFileWidget::nameChanged,
+            ui->imageView, &ImageWidget::setName);
+}
+
+void MainWindow::setThresholdImg(QImage *thresholdImg)
+{
+    thresholdImg_ = thresholdImg;
+}
+
+QColor MainWindow::selectionClr() const
+{
+    return selectionClr_;
+}
+
+void MainWindow::setSelectionClr(const QColor &selectionClr)
+{
+    selectionClr_ = selectionClr;
+    QPixmap pm = QPixmap( ui->selectionClrBtn->iconSize());
+    pm.fill(selectionClr);
+    pm = ImageService::addRect(pm);
+    ui->selectionClrBtn->setIcon(QIcon(pm));
+}
+
+void MainWindow::on_horizontalSlider_valueChanged(int value)
+{
+
+}
+
+void MainWindow::on_commandLinkButton_clicked(bool checked)
+{
+    if(checked)
+        setCursor(Qt::CrossCursor);
+    else
+        setCursor(Qt::ArrowCursor);
+
+}
+
+void MainWindow::setImg(QImage *img)
+{
+    img_ = img;
 }

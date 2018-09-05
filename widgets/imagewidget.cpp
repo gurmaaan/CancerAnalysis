@@ -12,6 +12,8 @@ ImageWidget::ImageWidget(QWidget *parent) :
     _scene = new QGraphicsScene;
     _view->setScene(_scene);
     setImg(placeHolder());
+    _sDouble = 1.000;
+    _sInt = 1000;
 }
 
 ImageWidget::~ImageWidget()
@@ -21,17 +23,27 @@ ImageWidget::~ImageWidget()
 
 void ImageWidget::on_actionZoom_In_triggered()
 {
-    //TODO scale ++
+    _sDouble+=0.015;
+    ui->zoomVSlider->setValue(_sInt);
+
+    scaleTo(_sDouble);
 }
 
 void ImageWidget::on_actionZoom_Out_triggered()
 {
-    //TODO scale--
+    _sDouble-=0.015;
+    ui->zoomVSlider->setValue(_sInt);
+    scaleTo(_sDouble);
 }
 
 void ImageWidget::on_zoomVSlider_sliderMoved(int position)
 {
-    //TODO changescale
+    if(ui->zoomVSlider->value() != position)
+    {
+        //TODO::додумать зум по слайдеру
+//        _sDouble = static_cast<double>(ui->zoomVSlider->value() / 1000);
+//        scaleTo(_sDouble);
+    }
 }
 
 QImage ImageWidget::placeHolder(int width, int height)
@@ -53,7 +65,16 @@ QImage ImageWidget::placeHolder(int width, int height)
 
 void ImageWidget::resizeEvent(QResizeEvent *e)
 {
-    resizePlaceHolderImage(ui->imgGV->size());
+    if(ui->nameLE->text() == "")
+        resizePhImg(ui->imgGV->size());
+}
+
+void ImageWidget::scaleTo(double newScaleKoeff)
+{
+    ui->zoomKoeffSB->setValue(_sDouble);
+    _sInt = static_cast<int>(_sDouble * 1000);
+    _view->scale(newScaleKoeff, newScaleKoeff);
+    _view->centerOn(_scene->width() / 2, _scene->height() / 2);
 }
 
 void ImageWidget::setImg(QImage img)
@@ -75,7 +96,7 @@ void ImageWidget::loadImg(QImage *img)
     setImg(*img);
 }
 
-void ImageWidget::resizePlaceHolderImage(int w, int h)
+void ImageWidget::resizePhImg(int w, int h)
 {
     if (w != 0 && h != 0)
     {
@@ -85,11 +106,11 @@ void ImageWidget::resizePlaceHolderImage(int w, int h)
     }
 }
 
-void ImageWidget::resizePlaceHolderImage(QSize size)
+void ImageWidget::resizePhImg(QSize size)
 {
     if( size.width()!=0 && size.height() != 0)
     {
-        resizePlaceHolderImage(size.width(), size.height());
+        resizePhImg(size.width(), size.height());
     }
 }
 
@@ -115,15 +136,27 @@ void ImageWidget::setSDouble(double sDouble)
 
 void ImageWidget::setH(int h)
 {
-    _h = h;
+    if(h != 0 && h!=ui->heightSpin->value())
+    {
+        _h = h;
+        ui->heightSpin->setValue(h);
+    }
 }
 
 void ImageWidget::setW(int w)
 {
-    _w = w;
+    if(w != 0 && w!=ui->widthSpin->value())
+    {
+        _w = w;
+        ui->heightSpin->setValue(w);
+    }
 }
 
 void ImageWidget::setName(const QString &name)
 {
-    _name = name;
+    if(name != "" && name != ui->nameLE->text())
+    {
+        _name = name;
+        ui->nameLE->setText(name);
+    }
 }
