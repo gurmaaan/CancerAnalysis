@@ -11,18 +11,12 @@ MainWindow::MainWindow(QWidget *parent) :
     setSelectionClr(c);
     img_ = new QImage();
     thresholdImg_ = new QImage();
+    ui->thresholdGB->setChecked(false);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    QString temp = "";
-    temp = FileService::projectDataPath();
-    qDebug() << temp;
 }
 
 void MainWindow::connectAll()
@@ -59,10 +53,12 @@ int MainWindow::thresholdVal() const
 void MainWindow::setThresholdVal(int thresholdVal)
 {
     thresholdVal_ = thresholdVal;
+    if(ui->thresholdHSlider->value() != thresholdVal)
+        ui->thresholdHSlider->setValue(thresholdVal);
+
+    if(ui->thresholdSB->value() != thresholdVal)
+        ui->thresholdSB->setValue(thresholdVal);
     setThresholdImg(ImageService::threshold(img(), thresholdVal));
-    //ui->imageView->loadImg(img());
-
-
 }
 
 void MainWindow::setThresholdImg(QImage *thresholdImg)
@@ -73,25 +69,22 @@ void MainWindow::setThresholdImg(QImage *thresholdImg)
 
 void MainWindow::setSelectionClr(const QColor &selectionClr)
 {
+    ui->selectionClrBtn->setChecked(false);
     selectionClr_ = selectionClr;
+
+    int trV = qGray(selectionClr_.rgb());
+    qDebug() << trV;
+    if(trV >= 0 && trV <= 255 && ui->imageView->name() != "")
+    {
+       setThresholdVal(trV);
+    }
+   // setThresholdVal(trV);
+    ui->thresholdGB->setChecked(true);
+
     QPixmap pm = QPixmap( ui->selectionClrBtn->iconSize());
     pm.fill(selectionClr);
     pm = ImageService::addRect(pm);
     ui->selectionClrBtn->setIcon(QIcon(pm));
-}
-
-void MainWindow::on_horizontalSlider_valueChanged(int value)
-{
-    setThresholdVal(value);
-}
-
-void MainWindow::on_commandLinkButton_clicked(bool checked)
-{
-    if(!checked)
-        this->setCursor(Qt::CrossCursor);
-    else
-        this->setCursor(Qt::ArrowCursor);
-
 }
 
 QImage *MainWindow::img() const
@@ -104,7 +97,7 @@ void MainWindow::setImg(QImage *img)
     img_ = img;
 }
 
-void MainWindow::on_groupBox_clicked(bool checked)
+void MainWindow::on_thresholdGB_clicked(bool checked)
 {
     if(checked)
     {
@@ -114,4 +107,17 @@ void MainWindow::on_groupBox_clicked(bool checked)
     {
         ui->imageView->loadImg(img());
     }
+}
+
+void MainWindow::on_selectionClrBtn_clicked(bool checked)
+{
+    if(!checked)
+        this->setCursor(Qt::CrossCursor);
+    else
+        this->setCursor(Qt::ArrowCursor);
+}
+
+void MainWindow::on_thresholdHSlider_valueChanged(int value)
+{
+    setThresholdVal(value);
 }

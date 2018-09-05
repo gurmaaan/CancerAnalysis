@@ -29,7 +29,6 @@ public:
     QImage *img() const;
     QImage *thresholdImg() const;
 
-
 public slots:
     void setImg(QImage *img);
     void setThresholdImg(QImage *thresholdImg);
@@ -38,10 +37,10 @@ public slots:
     void setSelectionClr(const QColor &selectionClr);
 
 private slots:
-    void on_pushButton_clicked();
-    void on_horizontalSlider_valueChanged(int value);
-    void on_commandLinkButton_clicked(bool checked);
-    void on_groupBox_clicked(bool checked);
+    void on_thresholdGB_clicked(bool checked);
+    void on_selectionClrBtn_clicked(bool checked);
+
+    void on_thresholdHSlider_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;

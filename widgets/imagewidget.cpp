@@ -195,9 +195,11 @@ void ImageWidget::on_scndLayerOpacityHSlider_valueChanged(int value)
 void ImageWidget::setSelectionClr(const QColor &selectionClr)
 {
     selectionClr_ = selectionClr;
+    emit selectionClrChanged(selectionClr);
 }
 
 void ImageWidget::setColorCoord(const QPoint &colorCoord)
 {
     colorCoord_ = colorCoord;
+    emit colorCoordChanged(colorCoord);
 }

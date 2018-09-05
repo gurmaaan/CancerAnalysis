@@ -96,7 +96,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="thresholdGB">
        <property name="title">
         <string>Threshold</string>
        </property>
@@ -108,7 +108,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QSlider" name="horizontalSlider">
+         <widget class="QSlider" name="thresholdHSlider">
           <property name="maximum">
            <number>255</number>
           </property>
@@ -118,7 +118,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox">
+         <widget class="QSpinBox" name="thresholdSB">
           <property name="buttonSymbols">
            <enum>QAbstractSpinBox::NoButtons</enum>
           </property>
@@ -176,9 +176,9 @@
  </resources>
  <connections>
   <connection>
-   <sender>horizontalSlider</sender>
+   <sender>thresholdHSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>spinBox</receiver>
+   <receiver>thresholdSB</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
