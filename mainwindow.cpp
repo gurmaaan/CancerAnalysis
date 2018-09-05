@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connectAll();
-    setSelectionClr(QColor(Qt::white));
+    QColor c = QColor(Qt::white);
+    setSelectionClr(c);
     img_ = new QImage();
     thresholdImg_ = new QImage();
 }
@@ -33,16 +34,41 @@ void MainWindow::connectAll()
 
     connect(ui->openImgFIleWidget, &ImageFileWidget::nameChanged,
             ui->imageView, &ImageWidget::setName);
+
+    connect(ui->imageView, &ImageWidget::selectionClrChanged,
+            this, &MainWindow::setSelectionClr);
+}
+
+void MainWindow::setColorPoint(const QPoint colorPoint)
+{
+    colorPoint_ = colorPoint;
+    QColor c = QColor(img_->pixelColor(colorPoint));
+    setSelectionClr(c);
+}
+
+QImage *MainWindow::thresholdImg() const
+{
+    return thresholdImg_;
+}
+
+int MainWindow::thresholdVal() const
+{
+    return thresholdVal_;
+}
+
+void MainWindow::setThresholdVal(int thresholdVal)
+{
+    thresholdVal_ = thresholdVal;
+    setThresholdImg(ImageService::threshold(img(), thresholdVal));
+    //ui->imageView->loadImg(img());
+
+
 }
 
 void MainWindow::setThresholdImg(QImage *thresholdImg)
 {
     thresholdImg_ = thresholdImg;
-}
-
-QColor MainWindow::selectionClr() const
-{
-    return selectionClr_;
+    ui->imageView->addScndLayer(thresholdImg_);
 }
 
 void MainWindow::setSelectionClr(const QColor &selectionClr)
@@ -56,19 +82,36 @@ void MainWindow::setSelectionClr(const QColor &selectionClr)
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
-
+    setThresholdVal(value);
 }
 
 void MainWindow::on_commandLinkButton_clicked(bool checked)
 {
-    if(checked)
-        setCursor(Qt::CrossCursor);
+    if(!checked)
+        this->setCursor(Qt::CrossCursor);
     else
-        setCursor(Qt::ArrowCursor);
+        this->setCursor(Qt::ArrowCursor);
 
+}
+
+QImage *MainWindow::img() const
+{
+    return img_;
 }
 
 void MainWindow::setImg(QImage *img)
 {
     img_ = img;
+}
+
+void MainWindow::on_groupBox_clicked(bool checked)
+{
+    if(checked)
+    {
+        ui->imageView->loadImg(img());
+        ui->imageView->addScndLayer(thresholdImg_);
+    } else
+    {
+        ui->imageView->loadImg(img());
+    }
 }

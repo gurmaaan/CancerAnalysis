@@ -184,6 +184,13 @@
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QSlider" name="scndLayerOpacityHSlider">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>

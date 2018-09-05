@@ -7,6 +7,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QDebug>
+#include <QMouseEvent>
 
 extern const QString img_size_devider;
 
@@ -29,6 +30,13 @@ public:
     inline QString name()   const { return _name; 	}
     inline QImage img()     const { return _img;    }
 
+    void setColorCoord(const QPoint &colorCoord);
+
+    QColor selectionClr() const
+    {
+        return selectionClr_;
+    }
+    void setSelectionClr(const QColor &selectionClr);
 
 public slots:
     void setName(const QString &name);
@@ -40,13 +48,20 @@ public slots:
     void setView(QGraphicsView *view);
     void setImg(QImage img);
     void loadImg(QImage *img);
+    void addScndLayer(QImage *scndLImg);
     void resizePhImg(int w, int h);
     void resizePhImg(QSize size);
+
+
+signals:
+    void selectionClrChanged(const QColor &selectionClr);
+    void colorCoordChanged(const QPoint pointOfColor);
 
 private slots:
     void on_actionZoom_In_triggered();
     void on_actionZoom_Out_triggered();
     void on_zoomVSlider_sliderMoved(int position);
+    void on_scndLayerOpacityHSlider_valueChanged(int value);
 
 private:
     Ui::ImageWidget *ui;
@@ -58,7 +73,8 @@ private:
 
     double _sDouble;
     int _sInt;
-
+    QPoint colorCoord_;
+    QColor selectionClr_;
     QGraphicsScene *_scene;
     QGraphicsView *_view;
 
@@ -67,6 +83,7 @@ private:
     QImage placeHolder(int width = 300, int height = 300);
     void resizeEvent(QResizeEvent *e);
     void scaleTo(double newScaleKoeff);
+    void mousePressEvent(QMouseEvent *e);
 };
 
 #endif // IMAGEWIDGET_H

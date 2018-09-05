@@ -77,6 +77,14 @@ void ImageWidget::scaleTo(double newScaleKoeff)
     _view->centerOn(_scene->width() / 2, _scene->height() / 2);
 }
 
+void ImageWidget::mousePressEvent(QMouseEvent *e)
+{
+   QPoint p = QPoint(e->pos().x(), e->pos().y());
+   setColorCoord(p);
+   QColor newSelectionClr = img().pixelColor(p);
+   setSelectionClr(newSelectionClr);
+}
+
 void ImageWidget::setImg(QImage img)
 {
     if(img.isNull())
@@ -87,6 +95,9 @@ void ImageWidget::setImg(QImage img)
     else
         _img = img;
 
+    ui->heightSpin->setValue(img.height());
+    ui->widthSpin->setValue(img.width());
+   // _scene->clear();
     QGraphicsPixmapItem *emptyItem = new QGraphicsPixmapItem(QPixmap::fromImage(_img));
     _scene->addItem(emptyItem);
 }
@@ -96,13 +107,23 @@ void ImageWidget::loadImg(QImage *img)
     setImg(*img);
 }
 
+void ImageWidget::addScndLayer(QImage *scndLImg)
+{
+    _scene->clear();
+    QGraphicsPixmapItem *firstItem = new QGraphicsPixmapItem(QPixmap::fromImage(_img));
+    _scene->addItem(firstItem);
+    QGraphicsPixmapItem *scndItem = new QGraphicsPixmapItem(QPixmap::fromImage(*scndLImg));
+    _scene->addItem(scndItem);
+
+}
+
 void ImageWidget::resizePhImg(int w, int h)
 {
     if (w != 0 && h != 0)
     {
         QImage newPh = placeHolder(ui->imgGV->width(), ui->imgGV->height());
         setImg(newPh);
-        _view->centerOn(0, 0);
+        _view->centerOn(ui->imgGV->width() / 2, ui->imgGV->height() / 2);
     }
 }
 
@@ -159,4 +180,24 @@ void ImageWidget::setName(const QString &name)
         _name = name;
         ui->nameLE->setText(name);
     }
+}
+
+void ImageWidget::on_scndLayerOpacityHSlider_valueChanged(int value)
+{
+    qDebug() << _scene->items().count();
+    double newOpacity = static_cast<double>(static_cast<double>(value) / static_cast<double>(100));
+    qDebug() << newOpacity;
+    if(_scene->items().count() >= 2)
+        _scene->items().first()->setOpacity(newOpacity);
+
+}
+
+void ImageWidget::setSelectionClr(const QColor &selectionClr)
+{
+    selectionClr_ = selectionClr;
+}
+
+void ImageWidget::setColorCoord(const QPoint &colorCoord)
+{
+    colorCoord_ = colorCoord;
 }

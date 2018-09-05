@@ -24,21 +24,24 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QColor selectionClr() const;
-    void setSelectionClr(const QColor &selectionClr);
-
+    QColor selectionClr() { return selectionClr_;}
     int thresholdVal() const;
+    QImage *img() const;
+    QImage *thresholdImg() const;
 
 
 public slots:
     void setImg(QImage *img);
     void setThresholdImg(QImage *thresholdImg);
     void setThresholdVal(int thresholdVal);
+    void setColorPoint(const QPoint colorPoint);
+    void setSelectionClr(const QColor &selectionClr);
 
 private slots:
     void on_pushButton_clicked();
     void on_horizontalSlider_valueChanged(int value);
     void on_commandLinkButton_clicked(bool checked);
+    void on_groupBox_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;
@@ -48,6 +51,7 @@ private:
     QImage *thresholdImg_;
     QColor selectionClr_;
     int thresholdVal_;
+    QPoint colorPoint_;
 };
 
 #endif // MAINWINDOW_H
