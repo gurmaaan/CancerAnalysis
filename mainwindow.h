@@ -2,10 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "services.h"
-
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
+#include <QResizeEvent>
+#include <QDebug>
+
+#include "widgets/imagewidget.h"
+#include "widgets/imagefilewidget.h"
+#include "services.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +31,7 @@ private:
     Ui::MainWindow *ui;
     QImage img_;
     QGraphicsScene scene_;
+    void resizeEvent(QResizeEvent *e);
 };
 
 #endif // MAINWINDOW_H

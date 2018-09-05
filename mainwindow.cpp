@@ -21,3 +21,8 @@ void MainWindow::on_pushButton_clicked()
     temp = FileService::projectDataPath();
     qDebug() << temp;
 }
+
+void MainWindow::resizeEvent(QResizeEvent *e)
+{
+//    ui->imageView->resizePlaceHolderImage(ui->imageView->size().width(), ui->imageView->size().height());
+}

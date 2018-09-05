@@ -30,9 +30,11 @@ QString FileService::requiredPath(QDir currentDir, const QString &redirect, QStr
 #ifdef Q_OS_MAC
     currentDir.cdUp();
     currentDir.cdUp();
-    currentDir.cdUp();
-    currentDir.cdUp();
+
+
 #endif
+    currentDir.cdUp();
+    currentDir.cdUp();
     currentDir.cdUp();
     qDebug() << currentDir.path();
     currentDir.cd(redirect);

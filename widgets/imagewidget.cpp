@@ -34,9 +34,9 @@ void ImageWidget::on_zoomVSlider_sliderMoved(int position)
     //TODO changescale
 }
 
-QImage ImageWidget::placeHolder()
+QImage ImageWidget::placeHolder(int width, int height)
 {
-    QSize gvSize = QSize(ui->imgGV->size());
+    QSize gvSize = QSize(width, height);
     QImage placeholderImg = QImage(gvSize, QImage::Format_Grayscale8);
     placeholderImg.fill(QColor(Qt::lightGray));
 
@@ -49,6 +49,11 @@ QImage ImageWidget::placeHolder()
     p.end();
 
     return placeholderImg;
+}
+
+void ImageWidget::resizeEvent(QResizeEvent *e)
+{
+    resizePlaceHolderImage(ui->imgGV->size());
 }
 
 void ImageWidget::setImg(QImage img)
@@ -68,6 +73,24 @@ void ImageWidget::setImg(QImage img)
 void ImageWidget::loadImg(QImage *img)
 {
     setImg(*img);
+}
+
+void ImageWidget::resizePlaceHolderImage(int w, int h)
+{
+    if (w != 0 && h != 0)
+    {
+        QImage newPh = placeHolder(ui->imgGV->width(), ui->imgGV->height());
+        setImg(newPh);
+        _view->centerOn(0, 0);
+    }
+}
+
+void ImageWidget::resizePlaceHolderImage(QSize size)
+{
+    if( size.width()!=0 && size.height() != 0)
+    {
+        resizePlaceHolderImage(size.width(), size.height());
+    }
 }
 
 void ImageWidget::setView(QGraphicsView *view)
