@@ -13,8 +13,14 @@
 #include <QTextStream>
 #include <QTextCodec>
 #include <QFileInfo>
+#include <QApplication>
+#include <QImageReader>
+#include <QImageWriter>
+#include <QFileDialog>
+#include <QByteArray>
 
-extern const QString _DATA_PATH_;
+extern const QString data_path;
+extern const QString mime_separator;
 
 enum class FileType
 {
@@ -24,19 +30,32 @@ enum class FileType
     Dir
 };
 
+enum class ImgType
+{
+    PNG,
+    JPG,
+    TIF,
+    BMP,
+    SUPPORTED,
+    ALL
+};
+
 class FileService : public QObject
 {
     Q_OBJECT
 public:
     explicit FileService(QObject *parent = nullptr);
-    static QString initDialogAndGetOpenedFileName(QString title, FileType fType);
+    static QString initOpenFileDialog(QString title, FileType fType);
     static QString getTextOfFile(QString path);
-
+    static QString projectDataPath();
     static QString fileTypeStr(FileType fType);
+    static QString imgTypeStr(ImgType imgType);
     static QString fileExtension(QString path);
     static QString fileName(QString path);
-private:
+    static QString concotinateMime(QVector<QString> parts, const QString separator = mime_separator);
+    static QString typeByExt(QString extenssion);
     static QString requiredPath(QDir currentDir, const QString &redirect, QString defaultLocation = QString(QStandardPaths::PicturesLocation));
+    static QString initOpenImgFileDialog(QFileDialog &dialog, QFileDialog::AcceptMode acceptMode = QFileDialog::AcceptOpen);
 };
 
 enum class UsersAction
@@ -63,7 +82,8 @@ enum class ErrorType
 {
     EmptyCell,
     FileNotExist,
-    DirNotExist
+    DirNotExist,
+    CouldntRead
 };
 
 class Msg

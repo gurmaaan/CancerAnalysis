@@ -12,3 +12,10 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    QString temp = "";
+    temp = FileService::projectDataPath();
+    qDebug() << temp;
+}

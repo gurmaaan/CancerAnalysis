@@ -11,6 +11,7 @@ public:
     ImageService();
 
     static QPixmap addRect(QPixmap &pm, int w = 1, QColor clr = QColor(Qt::black));
+
 private:
     static bool borderArea(QImage img, int i, int j, int w = 1);
 };

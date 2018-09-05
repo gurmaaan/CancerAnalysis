@@ -31,6 +31,8 @@ public:
     static QStringList splitAndRemoveFirstColOfFirstRow(QString fileText);
     static QStringList splitAndRemoveFirstRow(QString fileText);
     static QStringList splitBySemicolon(QString str);
+    
+    static QString getImageClass(QString imgFileName);
 
     static bool notEmpty(QString str);
 

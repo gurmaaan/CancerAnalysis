@@ -19,9 +19,10 @@ SOURCES += \
         services/imageservice.cpp \
         services/itemsservice.cpp \
         services/stringservice.cpp \
-        widgets/filewidget.cpp \
         mainwindow.cpp \
-        main.cpp 
+        main.cpp \
+        widgets/imagefilewidget.cpp \
+        widgets/imagewidget.cpp
 
 HEADERS += \
         services/fileservice.h \
@@ -29,13 +30,15 @@ HEADERS += \
         services/imageservice.h \
         services/itemsservice.h \
         services/stringservice.h \
-        widgets/filewidget.h \
         mainwindow.h \
-        services.h 
+        services.h \
+        widgets/imagefilewidget.h \
+        widgets/imagewidget.h
 
 FORMS += \
         mainwindow.ui \
-        widgets/filewidget.ui
+        widgets/imagefilewidget.ui \
+        widgets/imagewidget.ui
 
 win32: RC_FILE = iconsource.rc
 

@@ -121,6 +121,21 @@ QStringList StringService::splitBySemicolon(QString str)
     return str.split(";");
 }
 
+QString StringService::getImageClass(QString imgFileName)
+{
+    QString imClass = "";
+    QString classAndName = imgFileName.right( imgFileName.length() - 20);
+    QStringList nameParts = classAndName.split("_");
+
+    if(nameParts.first() == "НЕТ")
+        imClass = "Доброкачественная опухоль";
+    else if (nameParts.first() == "АТР")
+        imClass = "Нормальная клетка";
+    else if ( nameParts.first() == "АДН")
+        imClass = "Аденома 3-й степени";
+    return imClass;
+}
+
 QString StringService::getFirstCol(QString str)
 {
     return str.split(";").first();
